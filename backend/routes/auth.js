@@ -285,4 +285,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Get all users (Admin only)
+const auth = require('../middleware/authMiddleware');
+router.get('/users', auth, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied. Admins only.' });
+    }
+    const users = await User.find({}, '-password');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;

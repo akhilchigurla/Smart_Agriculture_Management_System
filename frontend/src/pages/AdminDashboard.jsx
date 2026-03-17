@@ -19,10 +19,13 @@ const AdminDashboard = () => {
 
     const fetchAdminData = async () => {
       try {
-        const [fertRes, eqRes, pestsRes] = await Promise.all([
+        const [fertRes, eqRes, pestsRes, usersRes] = await Promise.all([
            axios.get(`${API_BASE_URL}/fertilizers`),
            axios.get(`${API_BASE_URL}/equipment`),
-           axios.get(`${API_BASE_URL}/pests`)
+           axios.get(`${API_BASE_URL}/pests`),
+           axios.get(`${API_BASE_URL}/auth/users`, {
+             headers: { Authorization: `Bearer ${token}` }
+           })
         ]);
         
         setStats({
@@ -31,11 +34,7 @@ const AdminDashboard = () => {
           pests: pestsRes.data.length
         });
         
-        // Mocking user fetch - In reality, build an Admin User route
-        setUsers([
-          { _id: '1', name: 'John Doe', role: 'farmer', isVerified: true },
-          { _id: '2', name: 'Dealer XYZ', role: 'dealer', isVerified: true }
-        ]);
+        setUsers(usersRes.data);
 
       } catch (err) {
         console.error('Admin fetch error', err);
