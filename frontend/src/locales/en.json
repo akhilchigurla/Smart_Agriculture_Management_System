@@ -1,0 +1,146 @@
+{
+  "common": {
+    "title": "🌱 Smart Agri System",
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "hi": "Hi, {{name}}",
+    "explore": "🚀 Explore with us",
+    "closeExploration": "❌ Close Exploration"
+  },
+  "nav": {
+    "fertilizers": "Fertilizer Marketplace",
+    "equipment": "Equipment Rental",
+    "advisory": "Crop Advisory",
+    "disease": "Disease Detection",
+    "weather": "Weather Dashboard",
+    "irrigation": "Drip Irrigation",
+    "pests": "Pest Alerts",
+    "bookings": "My Bookings"
+  },
+  "home": {
+    "hero_title": "Smart Agriculture Management System",
+    "hero_subtitle": "Empowering farmers with modern technology, right from the roots of tradition.",
+    "select_language_prominent": "Select your preferred language / మీ భాషను ఎంచుకోండి",
+    "buttons": {
+      "explore": "🚀 Explore with us",
+      "close": "❌ Close Exploration",
+      "register": "Register",
+      "login": "Login"
+    },
+    "modules": {
+      "fertilizers": { "title": "🌱 Fertilizer Marketplace", "desc": "Find nearby fertilizers easily without traveling to multiple stores." },
+      "equipment": { "title": "🚜 Equipment Rental", "desc": "Rent high-quality agricultural equipment at affordable hourly rates." },
+      "advisory": { "title": "🤖 Crop Advisory", "desc": "Expert AI suggestions for your crops and soil health." },
+      "disease": { "title": "🔬 Disease Detection", "desc": "Upload pictures to detect crop diseases and get solutions." },
+      "weather": { "title": "🌦️ Weather Dashboard", "desc": "Real-time weather updates and alerts for your location." },
+      "irrigation": { "title": "💧 Drip Irrigation", "desc": "Guidance on modern irrigation techniques and setup." },
+      "pests": { "title": "🚨 Pest Alerts", "desc": "Stay updated on community pest reports and prevention." },
+      "bookings": { "title": "📋 My Bookings", "desc": "Manage your active rentals and fertilizer orders." }
+    },
+    "services_title": "Our Services",
+    "services": {
+      "fertilizer": { "title": "🌱 Fertilizer Marketplace", "desc": "Find nearby fertilizers easily without traveling to multiple stores. Explore interactive maps." },
+      "equipment": { "title": "🚜 Equipment Rental", "desc": "Rent high-quality agricultural equipment at affordable hourly rates. Share your own machinery." },
+      "disease": { "title": "🤖 AI Disease Detection", "desc": "Upload a picture of an infected crop and let AI suggest treatments, pesticides, and prevention." }
+    }
+  },
+  "irrigation": {
+    "title": "💧 Drip Irrigation System",
+    "intro": "Drip irrigation is a method of watering plants slowly through pipes, valves, tubing, and emitters. Water is delivered directly to the roots, reducing evaporation and water loss significantly.",
+    "benefits_title": "Key Benefits",
+    "benefits": {
+      "water_saving": { "title": "Saves 30–70% Water", "desc": "Minimizes evaporation and surface runoff." },
+      "weed_reduction": { "title": "Reduces Weed Growth", "desc": "Water only reaches target plants, not weeds." },
+      "yield_improvement": { "title": "Improves Yield", "desc": "Provides consistent moisture for better growth." },
+      "soil_erosion": { "title": "Prevents Soil Erosion", "desc": "Slow application keeps soil structure intact." },
+      "fert_efficiency": { "title": "Fertilizer Efficiency", "desc": "Nutrients are delivered directly to roots." },
+      "energy_saving": { "title": "Energy Savings", "desc": "Operates at lower pressure than sprinklers." }
+    },
+    "suitable_crops": "Suitable Crops",
+    "table": {
+      "crop": "Crop",
+      "requirement": "Water Requirement",
+      "suitable": "Drip Suitable",
+      "yes": "✅ Yes",
+      "tomato": "Tomato",
+      "cotton": "Cotton",
+      "sugarcane": "Sugarcane",
+      "grapes": "Grapes",
+      "banana": "Banana",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "components_title": "System Components",
+    "components": {
+      "pump": { "name": "Water Pump", "desc": "The heart of the system, providing pressure." },
+      "filters": { "name": "Filters", "desc": "Prevents emitters from clogging with debris." },
+      "valves": { "name": "Control Valves", "desc": "Regulates the flow of water to zones." },
+      "pipeline": { "name": "Main Pipeline", "desc": "Carries water to the field areas." },
+      "emitters": { "name": "Drip Emitters", "desc": "Delivers water precisely to individual plants." }
+    },
+    "installation_title": "Installation Steps",
+    "guide": {
+      "step1": "Set up the water source and filtration unit.",
+      "step2": "Lay out and install the main pipeline along the field boundary.",
+      "step3": "Connect smaller lateral pipes to the main line for each row.",
+      "step4": "Punch holes and install drip emitters near each plant.",
+      "step5": "Test the system slowly to check for leaks and uniformity."
+    },
+    "calculator_title": "Water Saving Calculator",
+    "calculator": {
+      "land_area": "Land Area (Acres)",
+      "crop_type": "Crop Type",
+      "calculate": "Calculate Savings",
+      "traditional": "Traditional Irrigation:",
+      "drip": "Drip Irrigation:",
+      "total_saved": "Total Water Saved:",
+      "note": "* Calculated based on average regional crop water requirements and 60% efficiency improvement."
+    }
+  },
+  "auth": {
+    "login_title": "Login",
+    "register_title": "Registration",
+    "email": "Email Address",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "login_btn": "Login",
+    "register_btn": "Register",
+    "footer_no_account": "Don't have an account?",
+    "footer_have_account": "Already registered?",
+    "role_label": "Register As",
+    "farmer": "Farmer",
+    "dealer": "Equipment/Fertilizer Dealer",
+    "full_name": "Full Name",
+    "mobile": "Mobile Number (10 digits, starts with 6-9)",
+    "land": "Acres of Land Owned",
+    "errors": {
+      "match": "Passwords do not match",
+      "email": "Please enter a valid email address",
+      "strong": "enter strong password",
+      "mobile": "invalid mobile number",
+      "login_failed": "Login failed",
+      "reg_failed": "Registration failed",
+      "success": "Registration successful! please verify with OTP sent to your email.",
+      "otp_invalid": "Invalid or expired OTP",
+      "resend_success": "OTP resent successfully"
+    },
+    "verify_title": "Email Verification",
+    "otp_label": "Enter 6-Digit OTP",
+    "verify_btn": "Verify Email",
+    "resend_btn": "Resend OTP",
+    "otp_sent_to": "We have sent a verification code to",
+    "forgot": {
+      "title": "Forgot Password",
+      "email_label": "Email Address",
+      "send_otp": "Send Reset Code",
+      "otp_sent_to": "A reset code has been sent to {{email}}",
+      "verify_continue": "Verify & Continue",
+      "new_password": "New Password",
+      "reset_submit": "Reset Password",
+      "back_login": "Back to Login",
+      "success": "Password reset successful! Please login with your new password."
+    }
+  }
+}
