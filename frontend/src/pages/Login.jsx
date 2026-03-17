@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -12,8 +13,9 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    const normalizedEmail = email.toLowerCase().trim();
     try {
-      const res = await axios.post('http://localhost:5001/api/auth/login', { email, password });
+      const res = await axios.post(`${API_BASE_URL}/auth/login`, { email: normalizedEmail, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       window.location.href = '/';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useTranslation } from 'react-i18next';
 
 function ForgotPassword() {
@@ -19,7 +20,7 @@ function ForgotPassword() {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5001/api/auth/forgot-password', { email });
+      await axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
       setStep(2);
     } catch (err) {
       setError(err.response?.data?.message || t('auth.errors.otp_failed'));
@@ -42,7 +43,7 @@ function ForgotPassword() {
     setLoading(true);
     setError('');
     try {
-      await axios.post('http://localhost:5001/api/auth/reset-password', { 
+      await axios.post(`${API_BASE_URL}/auth/reset-password`, { 
         email, 
         otp, 
         newPassword 

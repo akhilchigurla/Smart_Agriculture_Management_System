@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -28,7 +29,7 @@ const Register = () => {
     setLoading(true);
     setServerError('');
     try {
-      await axios.post('http://localhost:5001/api/auth/send-otp', { email: formData.email });
+      await axios.post(`${API_BASE_URL}/auth/send-otp`, { email: formData.email });
       setIsOtpSent(true);
     } catch (err) {
       setServerError(err.response?.data?.message || 'Failed to send OTP');
@@ -42,7 +43,7 @@ const Register = () => {
     setLoading(true);
     setServerError('');
     try {
-      const res = await axios.post('http://localhost:5001/api/auth/verify-otp', { email: formData.email, otp });
+      const res = await axios.post(`${API_BASE_URL}/auth/verify-otp`, { email: formData.email, otp });
       setVerificationToken(res.data.verificationToken);
       setIsEmailVerified(true);
       setIsOtpSent(false); // Hide OTP box after verification
@@ -83,8 +84,9 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const payload = { ...formData, verificationToken };
-      await axios.post('http://localhost:5001/api/auth/register', payload);
+      const normalizedEmail = formData.email.toLowerCase().trim();
+      const payload = { ...formData, email: normalizedEmail, verificationToken };
+      await axios.post(`${API_BASE_URL}/auth/register`, payload);
       alert('Registration successful! please login.');
       navigate('/login');
     } catch (err) {

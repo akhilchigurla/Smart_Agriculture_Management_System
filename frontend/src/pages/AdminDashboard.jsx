@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useNavigate, Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
@@ -19,9 +20,9 @@ const AdminDashboard = () => {
     const fetchAdminData = async () => {
       try {
         const [fertRes, eqRes, pestsRes] = await Promise.all([
-           axios.get('http://localhost:5000/api/fertilizers'),
-           axios.get('http://localhost:5000/api/equipment'),
-           axios.get('http://localhost:5000/api/pests')
+           axios.get(`${API_BASE_URL}/fertilizers`),
+           axios.get(`${API_BASE_URL}/equipment`),
+           axios.get(`${API_BASE_URL}/pests`)
         ]);
         
         setStats({

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Disease = () => {
   const [image, setImage] = useState(null);
@@ -24,7 +25,7 @@ const Disease = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5001/api/disease/detect', formData, {
+      const res = await axios.post(`${API_BASE_URL}/disease/detect`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

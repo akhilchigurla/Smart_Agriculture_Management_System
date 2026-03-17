@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL, BASE_URL } from '../config';
 
 const PestAlerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -19,7 +20,7 @@ const PestAlerts = () => {
 
   const fetchAlerts = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/api/pests');
+      const res = await axios.get(`${API_BASE_URL}/pests`);
       setAlerts(res.data);
     } catch (err) {
       console.error(err);
@@ -63,7 +64,7 @@ const PestAlerts = () => {
     if (image) data.append('image', image);
 
     try {
-      await axios.post('http://localhost:5001/api/pests', data, {
+      await axios.post(`${API_BASE_URL}/pests`, data, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchAlerts();
@@ -129,7 +130,7 @@ const PestAlerts = () => {
         {alerts.map(alert => (
           <div key={alert._id} className="glass-panel feature-card fade-in" style={{ padding: '20px' }}>
             {alert.imageUrl && (
-              <img src={`http://localhost:5001${alert.imageUrl}`} alt="Pest" style={{ width: '50%', height: 'auto', objectFit: 'contain', borderRadius: '8px', marginBottom: '15px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
+              <img src={`${BASE_URL}${alert.imageUrl}`} alt="Pest" style={{ width: '50%', height: 'auto', objectFit: 'contain', borderRadius: '8px', marginBottom: '15px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />
             )}
             <h4 style={{ color: 'red' }}>🚨 Warning in {alert.location?.village && `${alert.location.village}, `}{alert.location?.mandal}, {alert.location?.district}</h4>
             <p style={{ marginTop: '10px' }}><strong>Effected by:</strong> {alert.description}</p>

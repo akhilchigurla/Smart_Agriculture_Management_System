@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Advisory = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ const Advisory = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/advisory', formData);
+      const res = await axios.post(`${API_BASE_URL}/advisory`, formData);
       setResult(res.data);
     } catch (err) {
       console.error(err);

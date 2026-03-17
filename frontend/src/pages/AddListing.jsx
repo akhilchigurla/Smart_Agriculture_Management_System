@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useNavigate } from 'react-router-dom';
 
 const AddListing = () => {
@@ -78,12 +79,12 @@ const AddListing = () => {
       };
 
       if (type === 'fertilizer') {
-        await axios.post('http://localhost:5001/api/fertilizers', payload, {
+        await axios.post(`${API_BASE_URL}/fertilizers`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         navigate('/fertilizers');
       } else {
-        await axios.post('http://localhost:5001/api/equipment', payload, {
+        await axios.post(`${API_BASE_URL}/equipment`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
         navigate('/equipment');

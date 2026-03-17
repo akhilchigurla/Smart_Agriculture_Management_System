@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 // Leaflet imports and fix removed as map is no longer needed
 
 const Fertilizers = () => {
@@ -25,7 +26,7 @@ const Fertilizers = () => {
       if (district) query += `?district=${district}`;
       if (mandal) query += query ? `&mandal=${mandal}` : `?mandal=${mandal}`;
       
-      const res = await axios.get(`http://localhost:5001/api/fertilizers${query}`);
+      const res = await axios.get(`${API_BASE_URL}/fertilizers${query}`);
       setFertilizers(res.data);
     } catch (err) {
       console.error(err);
@@ -39,7 +40,7 @@ const Fertilizers = () => {
   const handleBook = async (fertilizerId) => {
     try {
       const res = await axios.post(
-        'http://localhost:5001/api/fertilizers/book', 
+        `${API_BASE_URL}/fertilizers/book`, 
         { fertilizerId, landOwned: user.landOwned || 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );

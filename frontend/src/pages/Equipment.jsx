@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 // Leaflet imports removed as map is no longer needed
 
 const Equipment = () => {
@@ -25,7 +26,7 @@ const Equipment = () => {
       if (district) query += `?district=${district}`;
       if (mandal) query += query ? `&mandal=${mandal}` : `?mandal=${mandal}`;
       
-      const res = await axios.get(`http://localhost:5001/api/equipment${query}`);
+      const res = await axios.get(`${API_BASE_URL}/equipment${query}`);
       setEquipment(res.data);
     } catch (e) {
       console.error(e);
@@ -64,7 +65,7 @@ const Equipment = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5001/api/equipment/book',
+        `${API_BASE_URL}/equipment/book`,
         { equipmentId: id, rentalHours: Number(hours) },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -29,13 +29,14 @@ router.post('/send-otp', async (req, res) => {
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
     // Optional: Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (existingUser) return res.status(400).json({ message: 'User with this email already exists' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otpStore.set(email, { otp, timestamp: Date.now() });
+    otpStore.set(normalizedEmail, { otp, timestamp: Date.now() });
 
-    console.log(`[DEBUG] Generated OTP for ${email}: ${otp}`);
+    console.log(`[DEBUG] Generated OTP for ${normalizedEmail}: ${otp}`);
 
     // Set a timeout for mail sending
     const sendMailWithTimeout = (mailOptions) => {
@@ -90,16 +91,17 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Verification token expired or invalid' });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
     let user = await User.findOne({ 
       $or: [
         { mobileNumber },
-        { email }
+        { email: normalizedEmail }
       ]
     });
     
     if (user) {
       if (user.mobileNumber === mobileNumber) return res.status(400).json({ message: 'User with this mobile number already exists' });
-      if (user.email === email) return res.status(400).json({ message: 'User with this email already exists' });
+      if (user.email === normalizedEmail) return res.status(400).json({ message: 'User with this email already exists' });
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -108,7 +110,7 @@ router.post('/register', async (req, res) => {
     user = new User({ 
       name, 
       mobileNumber, 
-      email, 
+      email: normalizedEmail, 
       password: hashedPassword, 
       landOwned: role === 'dealer' ? 0 : landOwned, 
       role,
@@ -128,15 +130,16 @@ router.post('/register', async (req, res) => {
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(404).json({ message: 'User with this email does not exist' });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otpStore.set(email, { otp, timestamp: Date.now(), purpose: 'password-reset' });
+    otpStore.set(normalizedEmail, { otp, timestamp: Date.now(), purpose: 'password-reset' });
 
-    console.log(`[DEBUG] Password Reset OTP for ${email}: ${otp}`);
+    console.log(`[DEBUG] Password Reset OTP for ${normalizedEmail}: ${otp}`);
 
     try {
       await transporter.sendMail({
@@ -164,7 +167,8 @@ router.post('/forgot-password', async (req, res) => {
 router.post('/reset-password', async (req, res) => {
   try {
     const { email, otp, newPassword } = req.body;
-    const storedData = otpStore.get(email);
+    const normalizedEmail = email.toLowerCase().trim();
+    const storedData = otpStore.get(normalizedEmail);
 
     if (!storedData || storedData.otp !== otp || storedData.purpose !== 'password-reset') {
       return res.status(400).json({ message: 'Invalid or expired OTP' });
@@ -176,9 +180,9 @@ router.post('/reset-password', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await User.findOneAndUpdate({ email }, { password: hashedPassword });
+    await User.findOneAndUpdate({ email: normalizedEmail }, { password: hashedPassword });
     
-    otpStore.delete(email);
+    otpStore.delete(normalizedEmail);
     res.status(200).json({ message: 'Password reset successful' });
   } catch (err) {
     console.error("Reset Password Error: ", err);
@@ -190,7 +194,8 @@ router.post('/reset-password', async (req, res) => {
 router.post('/verify-otp', async (req, res) => {
   try {
     const { email, otp } = req.body;
-    const storedData = otpStore.get(email);
+    const normalizedEmail = email.toLowerCase().trim();
+    const storedData = otpStore.get(normalizedEmail);
 
     if (!storedData || storedData.otp !== otp) {
       return res.status(400).json({ message: 'Invalid or expired OTP' });
@@ -198,15 +203,15 @@ router.post('/verify-otp', async (req, res) => {
 
     // Check expiry (10 mins)
     if (Date.now() - storedData.timestamp > 10 * 60 * 1000) {
-      otpStore.delete(email);
+      otpStore.delete(normalizedEmail);
       return res.status(400).json({ message: 'OTP expired' });
     }
 
-    otpStore.delete(email);
+    otpStore.delete(normalizedEmail);
     
     // Generate a short-lived verification token (valid for 15 mins)
     const verificationToken = jwt.sign(
-      { email, purpose: 'email-verification' }, 
+      { email: normalizedEmail, purpose: 'email-verification' }, 
       process.env.JWT_SECRET, 
       { expiresIn: '15m' }
     );
@@ -221,13 +226,14 @@ router.post('/verify-otp', async (req, res) => {
 router.post('/resend-otp', async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    otpStore.set(email, { otp, timestamp: Date.now() });
+    otpStore.set(normalizedEmail, { otp, timestamp: Date.now() });
 
-    console.log(`[DEBUG] Resent OTP for ${email}: ${otp}`);
+    console.log(`[DEBUG] Resent OTP for ${normalizedEmail}: ${otp}`);
 
     try {
       await transporter.sendMail({
@@ -254,16 +260,28 @@ router.post('/resend-otp', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid Credentials' });
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
+    if (!user) {
+      console.log(`[AUTH] Login failed: User not found for ${normalizedEmail}`);
+      return res.status(400).json({ message: 'Invalid Credentials' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid Credentials' });
+    if (!isMatch) {
+      console.log(`[AUTH] Login failed: Password mismatch for ${normalizedEmail}`);
+      return res.status(400).json({ message: 'Invalid Credentials' });
+    }
 
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.status(200).json({ token, user });
+    
+    // Safety check: remove password if for some reason it's still there
+    const userObject = user.toObject();
+    delete userObject.password;
+
+    res.status(200).json({ token, user: userObject });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
